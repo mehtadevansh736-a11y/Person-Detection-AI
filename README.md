@@ -1,206 +1,160 @@
-# 🧍‍♂️📸 Person-Detection-AI — Real-Time Person Detection with YOLO26 🤖✨
+# Person-Detection-AI
 
-> ⚡ Detect **people** in 🖼️ images, 🎥 videos & 🔴 live webcam using pretrained **Ultralytics YOLO26** — with ⚙️ automatic GPU/CPU switching, 💾 auto-saved outputs & 🎯 person-only filtering!
+Real-time person detection in images, videos and live webcam feed using pretrained Ultralytics YOLO26.
 
-![Python](https://img.shields.io/badge/Python-3.11.15-blue?style=for-the-badge&logo=python&logoColor=white)
-![Ultralytics](https://img.shields.io/badge/Ultralytics-8.4.126-FF6B00?style=for-the-badge&logo=yolo&logoColor=white)
-![PyTorch](https://img.shields.io/badge/PyTorch-2.13.0+cu130-EE4C2C?style=for-the-badge&logo=pytorch&logoColor=white)
-![OpenCV](https://img.shields.io/badge/OpenCV-5.0.0-5C3EE8?style=for-the-badge&logo=opencv&logoColor=white)
-![License](https://img.shields.io/badge/License-MIT-green?style=for-the-badge)
+![Python 3.11](https://img.shields.io/badge/python-3.11-blue)
+![Ultralytics 8.4.126](https://img.shields.io/badge/ultralytics-8.4.126-orange)
+![License: MIT](https://img.shields.io/badge/license-MIT-green)
 
----
+## Features
 
-## 🌟 Hey Judges! Why You'll Love This Project 💖
+- Person detection using YOLO26 nano / small / medium weights pretrained on COCO
+- Person-only filtering (COCO class 0), other classes ignored
+- Supports image files, video files and webcam input in a single script
+- Automatic device selection (CUDA if available, otherwise CPU)
+- Annotated results saved to `runs/detect/predict*/`
+- Per-person confidence scores printed to terminal
+- Windows batch launcher included
+- VS Code launch configurations included
 
-| ✨ Feature | 📝 What It Does |
-|-----------|-----------------|
-| 🧠 **YOLO26 Powered** | Uses latest Ultralytics YOLO26 (`n` / `s` / `m`) pretrained on COCO — **no training needed!** |
-| 🎯 **Person-Only Mode** | Filters `COCO class 0 = person`, ignores cars, dogs, chairs 🙅‍♂️🚗🐕 |
-| 🎥 **3-in-1 Input** | 🖼️ Image + 🎞️ Video file + 🔴 Live webcam (`0`) — all in ONE script! |
-| ⚡ **Auto GPU/CPU** | Uses `cuda:0` if available, else falls back to `cpu` 🖥️➡️🚀 |
-| 💾 **Auto-Save** | Annotated results saved to `runs/detect/predict*/` automatically 📁 |
-| 📊 **Confidence Scores** | Prints `Person 1: confidence 0.87` for every detection 🔢 |
-| 🪟 **1-Click Windows Run** | Double-click `run_person_detection.bat` — done! 🖱️ |
-| 👨‍💻 **VS Code Ready** | 3 debug configs: demo image, webcam, your file ▶️ |
+## Model Details
 
----
+- Model family: Ultralytics YOLO26
+- Type: Single-stage object detector
+- Pretrained on: COCO dataset (80 classes)
+- Task: Detection with bounding boxes and confidence scores
+- Class used: 0 (person), filtered with `classes=[0]`
+- Confidence threshold: 0.35
+- Device: `cuda:0` if `torch.cuda.is_available()` else `cpu`
+- Inference: `ultralytics.YOLO.predict(save=True, show=is_live)`
 
-## 🧠🤖 Model Details — Figured Out For You! 🔍
+### Included Weights
 
-You didn't remember? No worries — I reverse-engineered everything from your code! 🕵️‍♂️👇
+| Model | File | Size | Notes |
+|-------|------|------|-------|
+| Nano | `yolo26n.pt` | 5.5 MB | Fastest, suitable for CPU and webcam |
+| Small (default) | `yolo26s.pt` | 20.4 MB | Balanced speed and accuracy |
+| Medium | `yolo26m.pt` | 44.2 MB | Higher accuracy, slower inference |
 
-### 🏗️ Architecture
+All three weight files are included in the repository so the project runs offline.
 
-- **Model Family:** Ultralytics **YOLO26** (successor to YOLOv8 / YOLO11) 🆕
-- **Type:** Single-stage object detector — `backbone + neck + head` 🏛️
-- **Pretrained On:** **COCO dataset** (330K images, 80 classes) 📚
-- **Task:** `detect` — bounding boxes + confidence 📦
-- **Class Used:** `0 = person` only (filtered via `classes=[0]`) 🧍
-- **Confidence Threshold:** `conf=0.35` — balanced precision/recall ⚖️
-- **Device Logic:** `cuda:0 if torch.cuda.is_available() else cpu` 🎮
-- **Inference API:** `ultralytics.YOLO.predict(save=True, show=is_live)` 🛠️
+### How It Works
 
-### 📦 Included Weights
+1. Load selected `yolo26*.pt` weight with `ultralytics.YOLO`
+2. Select device based on CUDA availability
+3. Run `model.predict(source, classes=[0], conf=0.35)`
+4. Draw bounding boxes and save annotated output to `runs/detect/predict*/`
+5. For video/webcam input, display live window (press Q to quit)
+6. Print person count and confidence per detection
 
-| 🎯 Model | 📄 File | 💾 Size | 🚀 Speed | 🎯 Accuracy | 💡 Best For |
-|---------|---------|---------|----------|-------------|-------------|
-| ⚡ **Nano** | `yolo26n.pt` | ~5.5 MB | 🟢 Fastest | ⭐⭐⭐ | 💻 Laptops, CPU, real-time webcam |
-| ⭐ **Small (default)** | `yolo26s.pt` | ~20.4 MB | 🟡 Fast | ⭐⭐⭐⭐ | ✅ Best balance — **recommended!** |
-| 🧠 **Medium** | `yolo26m.pt` | ~44.2 MB | 🟠 Slower | ⭐⭐⭐⭐⭐ | 🎯 Crowds, far/small people |
-
-> 💡 All 3 `.pt` files are already in this repo so judges can run **offline** without downloading! 🔌❌
-
-### 🔄 How It Works (Pipeline)
-
-```mermaid
-graph LR
-    A[🖼️🎥🔴 Input<br/>image/video/webcam] --> B[🧠 YOLO26<br/>n/s/m]
-    B --> C[🎯 Filter class 0<br/>person only, conf 0.35]
-    C --> D[📦 Draw boxes<br/>+ confidence]
-    D --> E[💾 Save to runs/<br/>+ 🖥️ Show if live]
-    E --> F[🔢 Print Person count<br/>in terminal]
-```
-
-1. 📥 Load `yolo26*.pt` via `ultralytics.YOLO` 
-2. 🖥️ Pick device — GPU if `torch.cuda.is_available()` else CPU
-3. 🔍 Run `model.predict(source, classes=[0], conf=0.35)`
-4. 🖼️ Annotate frames + 💾 save to `runs/detect/predict*/`
-5. 🖥️ If video/webcam → `show=True` popup window (press **Q** to quit 👋)
-6. 🔢 Print `Persons in frame: N` + per-person confidence
-
----
-
-## 📁 Project Structure 🗂️
+## Project Structure
 
 ```
 Person-Detection-AI/
-├── 🐍 detect_person.py            # <-- MAIN script, all logic here!
-├── 🪟 run_person_detection.bat    # <-- 1-click Windows launcher
-├── ⚡ yolo26n.pt                  # Nano weights (5.5 MB)
-├── ⭐ yolo26s.pt                  # Small weights (20.4 MB, DEFAULT)
-├── 🧠 yolo26m.pt                  # Medium weights (44.2 MB)
-├── 🖼️ bus.jpg                     # Demo image (Ultralytics bus 🚌)
-├── 📋 requirements.txt            # All dependencies
-├── 🚫 .gitignore                  # Ignores venv/, runs/, cache
-├── 📖 README.md                   # You are here! 👋
-├── ⚙️ .vscode/
-│   ├── launch.json                # 3 debug configs ▶️
-│   └── settings.json              # Default interpreter 🐍
-└── 📁 runs/detect/predict*/       # Auto-generated outputs (git-ignored)
+├── detect_person.py            # Main detection script
+├── run_person_detection.bat    # Windows launcher
+├── yolo26n.pt                  # Nano weights
+├── yolo26s.pt                  # Small weights (default)
+├── yolo26m.pt                  # Medium weights
+├── bus.jpg                     # Sample test image
+├── requirements.txt
+├── .gitignore
+├── README.md
+├── LICENSE
+├── .vscode/
+│   ├── launch.json
+│   └── settings.json
+└── runs/detect/predict*/       # Generated output (not tracked)
 ```
 
-**Core script:** `detect_person.py` — only **55 lines**! 📏✨
+`detect_person.py` contains `detect(source, model_key)` and CLI handling. Use `0` as source for webcam.
 
-| Function | Does |
-|----------|------|
-| `detect(source, model_key='s')` | Loads model, picks device, runs prediction, prints + saves |
-| `__main__` | Parses CLI: `python detect_person.py <source> [n/s/m]`, `0` = webcam 🔴 |
+## Installation
 
----
+### Prerequisites
 
-## 🚀💻 Installation Guide — Step By Step For ANY Laptop! 🙋‍♂️🙋‍♀️
+- Python 3.10 or 3.11 ([download](https://www.python.org/downloads/))
+- Git ([download](https://git-scm.com/downloads))
+- Windows, macOS or Linux
+- Optional: NVIDIA GPU with CUDA for faster inference, webcam for live mode
 
-### ✅ Prerequisites
-
-- 🐍 **Python 3.10 or 3.11** (you used `3.11.15` — perfect!) — [Download here](https://www.python.org/downloads/)
-- 🖥️ **Windows / Mac / Linux** — all supported! 🪟🍎🐧
-- 🎮 **GPU (optional):** NVIDIA + CUDA for speed. CPU works too! 🐢➡️🚀
-- 📷 **Webcam (optional):** only for live mode 🔴
-- 🧰 **Git** — [Download here](https://git-scm.com/downloads)
-
-### 🪟 Option A: Windows (Easiest — Recommended! ⭐)
+### Windows
 
 ```powershell
-# 1️⃣ Clone the repo
 git clone https://github.com/mehtadevansh736-a11y/Person-Detection-AI.git
 cd Person-Detection-AI
 
-# 2️⃣ Create virtual environment
 python -m venv venv
 .\venv\Scripts\activate
 
-# 3️⃣ Install dependencies
 pip install --upgrade pip
 pip install -r requirements.txt
 
-# 4️⃣ Run demo! 🎉
 python detect_person.py bus.jpg s
 ```
 
-> 🖱️ **Even easier:** just double-click `run_person_detection.bat` after installing deps!
-> ```
-> run_person_detection.bat bus.jpg s
-> run_person_detection.bat 0 s
-> ```
-
-### 🍎🐧 Option B: Mac / Linux
+### macOS / Linux
 
 ```bash
-# 1️⃣ Clone
 git clone https://github.com/mehtadevansh736-a11y/Person-Detection-AI.git
 cd Person-Detection-AI
 
-# 2️⃣ Venv
 python3 -m venv venv
 source venv/bin/activate
 
-# 3️⃣ Install
 pip install --upgrade pip
 pip install -r requirements.txt
 
-# 4️⃣ Run 🎉
 python detect_person.py bus.jpg s
 ```
 
-### 🎮 Option C: GPU Support (NVIDIA — Faster! ⚡)
+### GPU Support (NVIDIA)
 
-CPU install already includes PyTorch CPU. For **CUDA GPU**:
+The default install works on CPU. For CUDA:
 
 ```powershell
-# After pip install -r requirements.txt, upgrade torch to CUDA build:
 pip install torch torchvision --index-url https://download.pytorch.org/whl/cu130
-python -c "import torch; print(torch.cuda.is_available())"  # Should print True ✅
+python -c "import torch; print(torch.cuda.is_available())"
 ```
 
-> 🧪 **Tested on:** `torch 2.13.0+cu130`, CUDA 13.0, `ultralytics 8.4.126` ✅
+Tested with `torch 2.13.0+cu130`, CUDA 13.0, `ultralytics 8.4.126`.
 
----
+## Usage
 
-## 🎮 How To Run / Use 🕹️
-
-### 🖼️ 1. Detect in an Image
+Detect in an image:
 
 ```powershell
 python detect_person.py bus.jpg s
-python detect_person.py C:\Photos\crowd.jpg m   # use medium for crowds 🧠
-python detect_person.py https://ultralytics.com/images/bus.jpg  # URL also works! 🌐
+python detect_person.py C:\Photos\crowd.jpg m
+python detect_person.py https://ultralytics.com/images/bus.jpg
 ```
 
-### 🎞️ 2. Detect in a Video
+Detect in a video:
 
 ```powershell
 python detect_person.py myvideo.mp4 s
-# 👉 Popup window plays annotated video, press Q to quit 👋
-# 💾 Saved to: runs/detect/predict*/myvideo.avi
 ```
 
-### 🔴 3. Live Webcam Detection
+Output is saved under `runs/detect/predict*/`.
+
+Live webcam detection:
 
 ```powershell
-python detect_person.py 0 s        # 0 = default webcam 📷
-python detect_person.py 0 n        # nano = fastest for old laptops ⚡
-# 👉 Live window opens, press Q to quit 👋
+python detect_person.py 0 s
+python detect_person.py 0 n
 ```
 
-### 🧠 4. Switch Models
+Press Q in the video window to quit.
 
-| Command | Meaning |
-|---------|---------|
-| `python detect_person.py bus.jpg n` | ⚡ Nano — fastest, lowest accuracy |
-| `python detect_person.py bus.jpg s` | ⭐ Small — **default**, best balance |
-| `python detect_person.py bus.jpg m` | 🧠 Medium — slowest, highest accuracy |
+Switch models with the second argument:
 
-### 🪟 5. Windows 1-Click `.bat` Launcher
+| Command | Description |
+|---------|-------------|
+| `python detect_person.py bus.jpg n` | Nano, fastest |
+| `python detect_person.py bus.jpg s` | Small, default |
+| `python detect_person.py bus.jpg m` | Medium, most accurate |
+
+Windows launcher:
 
 ```bat
 run_person_detection.bat bus.jpg s
@@ -208,16 +162,9 @@ run_person_detection.bat 0 s
 run_person_detection.bat myvideo.mp4 m
 ```
 
-### 👨‍💻 6. VS Code Debugging ▶️
+VS Code: open the folder and press F5. Available configs are demo image, webcam, and active file.
 
-Press `F5` and pick:
-- 🖼️ **Person Detection (demo image)** — runs on default bus image
-- 🔴 **Person Detection (webcam)** — runs `detect_person.py 0`
-- 📄 **Person Detection (your file)** — open any image/video, then run!
-
----
-
-## 📊 Sample Output 🎉
+## Sample Output
 
 ```text
 Model: yolo26s.pt | Device: cuda:0 (NVIDIA GeForce RTX 4060)
@@ -229,76 +176,47 @@ Persons in frame: 3
 Annotated output saved to: runs/detect/predict3
 ```
 
-📁 **Outputs go to:** `runs/detect/predict/`, `predict2/`, `predict3/`... (auto-incremented, git-ignored) 💾
+Output directories are auto-incremented (`predict`, `predict2`, ...) and excluded from git.
 
----
+## Dependencies
 
-## 📋 Dependencies / Requirements 🧰
+| Package | Tested Version | Purpose |
+|---------|----------------|---------|
+| python | 3.11.15 | Runtime |
+| ultralytics | 8.4.126 | YOLO26 model and inference |
+| torch | 2.13.0+cu130 | Deep learning backend |
+| torchvision | 0.28.0+cu130 | Vision utilities |
+| opencv-python | 5.0.0.93 | Video and webcam handling |
+| numpy | 2.4.6 | Array operations |
+| pillow | 12.3.0 | Image I/O |
+| matplotlib | 3.11.1 | Plotting dependency |
+| pyyaml | 6.0.3 | Config parsing |
 
-**Tested environment (yours!):**
+See `requirements.txt` for the full list. Install with `pip install -r requirements.txt`.
 
-| 📦 Package | 📌 Version Tested | 💡 Purpose |
-|-----------|-------------------|------------|
-| 🐍 python | `3.11.15` | Runtime |
-| 🤖 ultralytics | `8.4.126` | YOLO26 model + inference |
-| 🔥 torch | `2.13.0+cu130` | Deep learning backend + CUDA |
-| 👁️ torchvision | `0.28.0+cu130` | Vision utils |
-| 📷 opencv-python | `5.0.0.93` | Video/webcam + display |
-| 🔢 numpy | `2.4.6` | Arrays |
-| 🖼️ pillow | `12.3.0` | Image I/O |
-| 📊 matplotlib | `3.11.1` | Plotting (ultralytics dep) |
-| 📄 pyyaml | `6.0.3` | Config parsing |
+## Troubleshooting
 
-Full list → see `requirements.txt` 📋
+| Issue | Fix |
+|-------|-----|
+| `torch.cuda.is_available()` returns False | Expected on CPU-only machines, the script falls back to CPU. Install the CUDA build of torch for GPU use |
+| Webcam does not open | Close other apps using the camera, try index `1` instead of `0`, check OS camera privacy settings |
+| Slow inference | Use the nano model (`n`), or reduce input resolution |
+| `yolo26s.pt not found` | Run from the project root directory, keep the script next to the `.pt` files |
+| `ModuleNotFoundError: ultralytics` | Activate the virtual environment and run `pip install -r requirements.txt` |
+| Video window does not close | Press Q while the OpenCV window is focused |
+| `cv2.imshow` error on macOS | Install OpenCV via brew, or use image mode which does not require display |
 
-Install all at once: `pip install -r requirements.txt` ✨
+## Acknowledgements
 
----
+- [Ultralytics](https://github.com/ultralytics/ultralytics) for YOLO and pretrained weights
+- [PyTorch](https://pytorch.org/) for the deep learning backend
+- [OpenCV](https://opencv.org/) for video handling
+- Sample image `bus.jpg` from Ultralytics
 
-## 🛠️ Troubleshooting — Don't Panic! 🆘
+## License
 
-| 😱 Problem | ✅ Fix |
-|-----------|--------|
-| `torch.cuda.is_available() = False` | Normal on CPU laptops! Code auto-falls back to CPU 🐢. For GPU: install CUDA torch (see Option C above) 🎮 |
-| 📷 Webcam won't open / black screen | Close Zoom/Teams/Chrome using camera ❌📹, try `1` instead of `0`, check privacy: Settings → Camera ✅ |
-| 🐌 Too slow / laggy | Use `n` model: `python detect_person.py 0 n` ⚡, or lower camera resolution |
-| ❌ `yolo26s.pt not found` | Run from project root: `cd Person-Detection-AI` 📁, don't move the script away from `.pt` files! |
-| 📦 `ModuleNotFoundError: ultralytics` | Activate venv first: `.\venv\Scripts\activate` then `pip install -r requirements.txt` 🐍 |
-| 🪟 Popup window won't close | Press **Q** (not X) in the video window ⌨️ |
-| 🍎 Mac `cv2.imshow` error | Install: `brew install opencv`, or just use image mode (no `show`) 🖼️ |
+MIT License. See `LICENSE`.
 
----
+## Author
 
-## 🔮 Future Scope / Ideas 💡🚀
-
-- 🧮 **People counter + crowd alerts** (e.g. beep if > 10 people) 🔔
-- 📍 **Zone detection** — count only inside a drawn ROI 🟩
-- 🎭 **Face blur** for privacy 😶‍🌫️
-- 🌐 **Streamlit web demo** — upload image, see boxes in browser 🖥️
-- 📱 **Mobile export** (YOLO26 → ONNX / TensorRT / CoreML) 📲
-- 🌙 **Thermal/night mode** — see author's separate `thermal_human_model` repo! 🌡️ (coming soon 👀)
-- 📊 **Analytics dashboard** — entries/exits per hour 📈
-
----
-
-## 🙏 Acknowledgements 💖
-
-- 🧠 [Ultralytics](https://github.com/ultralytics/ultralytics) for YOLO26 + COCO pretrained weights
-- 🔥 [PyTorch](https://pytorch.org/) for deep learning backend
-- 📷 [OpenCV](https://opencv.org/) for video handling
-- 🖼️ Demo image `bus.jpg` © Ultralytics
-
----
-
-## 📜 License 📄
-
-MIT License — free to use, modify & share! 🎉 See `LICENSE` file.
-
----
-
-## 👨‍💻 Author ✍️
-
-**Devansh Mehta** — [@mehtadevansh736-a11y](https://github.com/mehtadevansh736-a11y) 🌟
-
-> ⭐ **If you liked this project, please give it a star!** ⭐  
-> 🍴 Fork it, 💡 improve it, 🎤 present it with confidence! Good luck, judges love live webcam demos! 🔴📷✨
+Devansh Mehta — [@mehtadevansh736-a11y](https://github.com/mehtadevansh736-a11y)
