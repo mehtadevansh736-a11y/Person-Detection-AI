@@ -1,0 +1,14 @@
+# Core — tested with ultralytics 8.4.126, Python 3.11.15
+ultralytics==8.4.126
+opencv-python==5.0.0.93
+numpy==2.4.6
+pillow==12.3.0
+matplotlib==3.11.1
+PyYAML==6.0.3
+requests==2.34.2
+scipy>=1.10
+
+# PyTorch — CPU by default. For NVIDIA GPU (CUDA 13.0, as tested):
+# pip install torch==2.13.0 torchvision==0.28.0 --index-url https://download.pytorch.org/whl/cu130
+torch>=2.5
+torchvision>=0.20

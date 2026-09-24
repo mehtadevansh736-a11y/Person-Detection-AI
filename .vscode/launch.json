@@ -1,0 +1,32 @@
+{
+    "version": "0.2.0",
+    "configurations": [
+        {
+            "name": "Person Detection (demo image)",
+            "type": "debugpy",
+            "request": "launch",
+            "program": "${workspaceFolder}\\detect_person.py",
+            "console": "integratedTerminal",
+            "cwd": "${workspaceFolder}"
+        },
+        {
+            "name": "Person Detection (webcam)",
+            "type": "debugpy",
+            "request": "launch",
+            "program": "${workspaceFolder}\\detect_person.py",
+            "args": ["0"],
+            "console": "integratedTerminal",
+            "cwd": "${workspaceFolder}"
+        },
+        {
+            "name": "Person Detection (your file)",
+            "type": "debugpy",
+            "request": "launch",
+            "program": "${workspaceFolder}\\detect_person.py",
+            "args": ["${file}"],
+            "console": "integratedTerminal",
+            "cwd": "${workspaceFolder}",
+            "description": "Open an image/video in the editor first, then run this - it detects persons in the active file"
+        }
+    ]
+}
