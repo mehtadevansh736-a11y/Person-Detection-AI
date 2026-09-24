@@ -1,12 +1,12 @@
-# Person-Detection-AI
+# 🧍 Person-Detection-AI
 
-Real-time person detection in images, videos and live webcam feed using pretrained Ultralytics YOLO26.
+Real-time person detection in 📷 images, 🎥 videos and 🔴 live webcam feed using pretrained Ultralytics YOLO26.
 
 ![Python 3.11](https://img.shields.io/badge/python-3.11-blue)
 ![Ultralytics 8.4.126](https://img.shields.io/badge/ultralytics-8.4.126-orange)
 ![License: MIT](https://img.shields.io/badge/license-MIT-green)
 
-## Features
+## ✨ Features
 
 - Person detection using YOLO26 nano / small / medium weights pretrained on COCO
 - Person-only filtering (COCO class 0), other classes ignored
@@ -17,7 +17,7 @@ Real-time person detection in images, videos and live webcam feed using pretrain
 - Windows batch launcher included
 - VS Code launch configurations included
 
-## Model Details
+## 🧠 Model Details
 
 - Model family: Ultralytics YOLO26
 - Type: Single-stage object detector
@@ -47,7 +47,7 @@ All three weight files are included in the repository so the project runs offlin
 5. For video/webcam input, display live window (press Q to quit)
 6. Print person count and confidence per detection
 
-## Project Structure
+## 📁 Project Structure
 
 ```
 Person-Detection-AI/
@@ -69,7 +69,7 @@ Person-Detection-AI/
 
 `detect_person.py` contains `detect(source, model_key)` and CLI handling. Use `0` as source for webcam.
 
-## Installation
+## 🚀 Installation
 
 ### Prerequisites
 
@@ -119,7 +119,7 @@ python -c "import torch; print(torch.cuda.is_available())"
 
 Tested with `torch 2.13.0+cu130`, CUDA 13.0, `ultralytics 8.4.126`.
 
-## Usage
+## 🎮 Usage
 
 Detect in an image:
 
@@ -164,7 +164,7 @@ run_person_detection.bat myvideo.mp4 m
 
 VS Code: open the folder and press F5. Available configs are demo image, webcam, and active file.
 
-## Sample Output
+## 📊 Sample Output
 
 ```text
 Model: yolo26s.pt | Device: cuda:0 (NVIDIA GeForce RTX 4060)
@@ -178,7 +178,7 @@ Annotated output saved to: runs/detect/predict3
 
 Output directories are auto-incremented (`predict`, `predict2`, ...) and excluded from git.
 
-## Dependencies
+## 📦 Dependencies
 
 | Package | Tested Version | Purpose |
 |---------|----------------|---------|
@@ -194,7 +194,7 @@ Output directories are auto-incremented (`predict`, `predict2`, ...) and exclude
 
 See `requirements.txt` for the full list. Install with `pip install -r requirements.txt`.
 
-## Troubleshooting
+## 🛠️ Troubleshooting
 
 | Issue | Fix |
 |-------|-----|
@@ -206,17 +206,17 @@ See `requirements.txt` for the full list. Install with `pip install -r requireme
 | Video window does not close | Press Q while the OpenCV window is focused |
 | `cv2.imshow` error on macOS | Install OpenCV via brew, or use image mode which does not require display |
 
-## Acknowledgements
+## 🙏 Acknowledgements
 
 - [Ultralytics](https://github.com/ultralytics/ultralytics) for YOLO and pretrained weights
 - [PyTorch](https://pytorch.org/) for the deep learning backend
 - [OpenCV](https://opencv.org/) for video handling
 - Sample image `bus.jpg` from Ultralytics
 
-## License
+## 📄 License
 
 MIT License. See `LICENSE`.
 
-## Author
+## 👨‍💻 Author
 
 Devansh Mehta — [@mehtadevansh736-a11y](https://github.com/mehtadevansh736-a11y)
