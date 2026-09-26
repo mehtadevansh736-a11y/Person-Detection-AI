@@ -1,6 +1,6 @@
 # 🧍 Person-Detection-AI
 
-Real-time person detection in 📷 images, 🎥 videos and 🔴 live webcam feed using pretrained Ultralytics YOLO26.
+Real-time person detection in 📷 images, 🎥 videos and 🔴 live webcam feed using  Ultralytics YOLO26.
 
 ![Python 3.11](https://img.shields.io/badge/python-3.11-blue)
 ![Ultralytics 8.4.126](https://img.shields.io/badge/ultralytics-8.4.126-orange)
