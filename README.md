@@ -8,7 +8,7 @@ Real-time person detection in 📷 images, 🎥 videos and 🔴 live webcam feed
 
 ## ✨ Features
 
-- Person detection using YOLO26 nano / small / medium weights pretrained on COCO
+- Person detection using YOLO26 nano / small / medium weights  on COCO
 - Person-only filtering (COCO class 0), other classes ignored
 - Supports image files, video files and webcam input in a single script
 - Automatic device selection (CUDA if available, otherwise CPU)
