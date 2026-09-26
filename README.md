@@ -9,7 +9,7 @@ Real-time person detection in 📷 images, 🎥 videos and 🔴 live webcam feed
 ## ✨ Features
 
 - Person detection using YOLO26 nano / small / medium weights  on COCO
-- Person-only filtering (COCO class 0), other classes ignored
+- Person-only filtering (COCO class 0)
 - Supports image files, video files and webcam input in a single script
 - Automatic device selection (CUDA if available, otherwise CPU)
 - Annotated results saved to `runs/detect/predict*/`
@@ -21,7 +21,7 @@ Real-time person detection in 📷 images, 🎥 videos and 🔴 live webcam feed
 
 - Model family: Ultralytics YOLO26
 - Type: Single-stage object detector
-- Pretrained on: COCO dataset (80 classes)
+- trained on: COCO dataset 
 - Task: Detection with bounding boxes and confidence scores
 - Class used: 0 (person), filtered with `classes=[0]`
 - Confidence threshold: 0.35
@@ -208,7 +208,7 @@ See `requirements.txt` for the full list. Install with `pip install -r requireme
 
 ## 🙏 Acknowledgements
 
-- [Ultralytics](https://github.com/ultralytics/ultralytics) for YOLO and pretrained weights
+- [Ultralytics](https://github.com/ultralytics/ultralytics) for YOLO weights
 - [PyTorch](https://pytorch.org/) for the deep learning backend
 - [OpenCV](https://opencv.org/) for video handling
 - Sample image `bus.jpg` from Ultralytics
